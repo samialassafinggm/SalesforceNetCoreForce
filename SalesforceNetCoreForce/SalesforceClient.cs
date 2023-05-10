@@ -1,4 +1,5 @@
 ﻿using NetCoreForce.Client;
+using NetCoreForce.Client.Models;
 using NetCoreForce.Models;
 
 namespace SalesforceNetCoreForce; 
@@ -35,4 +36,22 @@ public class SalesforceClient {
 
             return account;
         }
+    
+    
+    public async Task<bool> UpdateAccount() {
+        bool state = false;
+        List<SObject>  accounts = new List<SObject>();
+        Dictionary<string, string> customHeaders = new Dictionary<string, string>();
+        customHeaders.Add("Name", "Test Dictinoary XXXXX");
+       
+        try {
+            await Client.UpdateRecords(accounts, false,customHeaders);
+            state = true;
+        }
+        catch (Exception e) {
+            Console.WriteLine("failed:{0}", e.Message);
+        }
+
+        return state;
+    }
     }
