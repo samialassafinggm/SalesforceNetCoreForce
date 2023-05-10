@@ -1,3 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using NetCoreForce.Client;
+using NetCoreForce.Models;
+using SalesforceNetCoreForce;
 
-Console.WriteLine("Hello, World!");
+
+
+CredtionalsModel credtionalsModel = new CredtionalsModel();
+
+SalesforceClient salesforceClient = new SalesforceClient();
+
+await salesforceClient.Authenticating(credtionalsModel);
+
+SfAccount sfAccount = await salesforceClient.CallAccount();

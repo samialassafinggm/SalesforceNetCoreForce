@@ -1,0 +1,12 @@
+﻿{
+  "ApiCredentials": {
+
+    "ClientId": "",
+    "ClientSecret": "",
+    "Username": "",
+    "Password": "",
+    "Sandbox-End-Point": "",
+    "BaseUrl": ""
+
+  }
+}
