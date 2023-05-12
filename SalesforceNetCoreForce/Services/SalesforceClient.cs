@@ -14,8 +14,9 @@ public class SalesforceClient {
 
     public ForceClient Client   { get; set; }
 
-    public async Task Authenticating(CredtionalsModel credtionalsModel) {
+    public async Task Authenticating() {
         Auth = new AuthenticationClient();
+        CredtionalsModel credtionalsModel = new CredtionalsModel();
         try {
             await Auth.UsernamePasswordAsync(credtionalsModel.ClientId, credtionalsModel.ClientSecret, credtionalsModel.Username, credtionalsModel.Password, credtionalsModel.SandboxEndPoint);
             Client = new ForceClient(Auth.AccessInfo.InstanceUrl, Auth.ApiVersion, Auth.AccessInfo.AccessToken);
@@ -76,27 +77,44 @@ public class SalesforceClient {
 
     }
 
-    public async Task<bool> CreateCases() {
+    public async Task<bool> CreateCases()
+    {
         bool state = false;
         CaseModel caseTest = new CaseModel();
-        List<CaseModel> cases = new List<CaseModel>();
-        cases = caseTest.CreateDummyCases();
+        List<CaseModel> cases = caseTest.CreateDummyCases();
         CreateResponse? response = new CreateResponse();
-      
-        foreach (var caseModel in cases) {
-            try {
-                response = await Client.CreateRecord("Case", caseModel);
-           state = true;
-           string caseId = response.Id;
-           Console.WriteLine("Case created successfully. Case ID: " + caseId);
-           
-            }
-            catch (Exception e) {
+        await Authenticating();
+
+        
+        try {
+
+            Parallel.ForEach(cases, async (caseModel) => {
+                if (Client!= null) {
+                    
+                    response = await Client.CreateRecord("Case", caseModel);
+                state = true;
                 string caseId = response.Id;
+                Console.WriteLine("Case created successfully. Case ID: " + caseId);
+                }
+                
+                else if(Client == null){
+                    await Authenticating();
+                    response = await Client.CreateRecord("Case", caseModel);
+                    state = true;
+                    string caseId = response.Id;
+                    Console.WriteLine("Case created successfully. Case ID: " + caseId);
+                }
+            });
+        }
+        
+        catch (Exception e)
+        {
             Console.WriteLine("Failed to create case. Error message: " + response.Errors);
             Console.WriteLine("failed:{0}", e.Message);
-            }
         }
+
+       
+
         return state;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using NetCoreForce.Client;
 using NetCoreForce.Models;
 using SalesforceNetCoreForce;
@@ -6,11 +7,8 @@ using SalesforceNetCoreForce;
 
 Stopwatch stopwatch = new Stopwatch();
 stopwatch.Start();
-CredtionalsModel credtionalsModel = new CredtionalsModel();
 
 SalesforceClient salesforceClient = new SalesforceClient();
-
-await salesforceClient.Authenticating(credtionalsModel);
 
 //SfAccount sfAccount = await salesforceClient.CallAccount();
 
@@ -20,4 +18,6 @@ await salesforceClient.Authenticating(credtionalsModel);
 bool isCaseCreated = await salesforceClient.CreateCases();
 stopwatch.Stop();
 double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
-Console.WriteLine("Vergangene Zeit für 100 Case: " + elapsedSeconds + " Sekunden");
+Console.WriteLine("Vergangene Zeit ist: " + elapsedSeconds + " Sekunden");
+
+

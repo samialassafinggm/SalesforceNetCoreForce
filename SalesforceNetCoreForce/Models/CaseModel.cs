@@ -24,9 +24,9 @@ public class CaseModel {
       
         List<CaseModel> cases = new List<CaseModel>();
         
-        for (int i = 101; i <= 200; i++) {
+        for (int i =1; i <= 2000; i++) {
 
-            CaseModel test = new CaseModel($"automated created case {i}","Case description","Sami","High");
+            CaseModel test = new CaseModel($"Case Model num{i}","Case description","Sami","High");
             cases.Add(test);
         }
 
